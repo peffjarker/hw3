@@ -105,18 +105,21 @@ int main() {
       total_sum += sum_prob;
       // cout << sum_prob << endl;
     }
+
+#pragma omp critical
+    {
+      cpp_int num;
+      cpp_int den;
+      cpp_int gcd_n_d;
+      long long d = 235092492288000ll;
+      num = sum_prob;
+      den = d;
+      gcd_n_d = gcd(num, den);
+
+      cout << "Probability = " << sum_prob << "/" << 235092492288000ll << endl;
+      // cout << "GCD  = " <<gcd_n_d << endl;
+      cout << "Reduced form:" << endl;
+      cout << sum_prob / gcd_n_d << "/" << d / gcd_n_d << endl;
+    }
   }
-
-  cpp_int num;
-  cpp_int den;
-  cpp_int gcd_n_d;
-  long long d = 235092492288000ll;
-  num = sum_prob;
-  den = d;
-  gcd_n_d = gcd(num, den);
-
-  cout << "Probability = " << sum_prob << "/" << 235092492288000ll << endl;
-  // cout << "GCD  = " <<gcd_n_d << endl;
-  cout << "Reduced form:" << endl;
-  cout << sum_prob / gcd_n_d << "/" << d / gcd_n_d << endl;
 }
