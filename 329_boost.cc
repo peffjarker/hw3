@@ -16,8 +16,8 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <iostream>
-#include <set>
 #include <omp.h>
+#include <set>
 
 using namespace std;
 using namespace boost::multiprecision;
@@ -57,53 +57,54 @@ int main() {
 
   // cout << (1<<15) << endl;
   long long total_sum = 0;
-  #pragma omp parallel
+#pragma omp parallel
   {
-  long long sum_prob = 0;
-  for (int i = 1; i <= 500; i++) {
+    long long sum_prob = 0;
+    for (int i = 1; i <= 500; i++) {
 
-    // Compute the probability that the frog, starting at position
-    // i croaks PPPPNNPPPNPPNPN
-    // By trying all possible moves.
-    int move[16];
-    for (int j = 0; j < (1 << 15); j++) {
+      // Compute the probability that the frog, starting at position
+      // i croaks PPPPNNPPPNPPNPN
+      // By trying all possible moves.
+      int move[16];
+      for (int j = 0; j < (1 << 15); j++) {
 
-      // cout << j << endl;
-      for (int k = 15; k >= 0; k--) {
-        if ((bits[k] & (j)) > 0) {
-          // cout << 1;
-          move[k] = -1; // Move[k] = -1
-        } else {        // cout << 0;
-          move[k] = 1;
-        } // Move[k]=1
+        // cout << j << endl;
+        for (int k = 15; k >= 0; k--) {
+          if ((bits[k] & (j)) > 0) {
+            // cout << 1;
+            move[k] = -1; // Move[k] = -1
+          } else {        // cout << 0;
+            move[k] = 1;
+          } // Move[k]=1
+        }
+        // cout << endl;
+
+        long long prob = 1;
+        int cur_loc = i;
+        for (int k = 0; k <= 14; k++) {
+          if ((primes[cur_loc]) && (croaks[k] == 'P')) {
+            prob = prob * 2;
+          }
+          if ((!primes[cur_loc]) && (croaks[k] == 'N')) {
+            prob = prob * 2;
+          }
+          if (cur_loc == 1) {
+            cur_loc = 2;
+            continue;
+          }
+          if (cur_loc == 500) {
+            cur_loc = 499;
+            continue;
+          }
+          cur_loc += move[k];
+        }
+
+        sum_prob += prob;
       }
-      // cout << endl;
-
-      long long prob = 1;
-      int cur_loc = i;
-      for (int k = 0; k <= 14; k++) {
-        if ((primes[cur_loc]) && (croaks[k] == 'P')) {
-          prob = prob * 2;
-        }
-        if ((!primes[cur_loc]) && (croaks[k] == 'N')) {
-          prob = prob * 2;
-        }
-        if (cur_loc == 1) {
-          cur_loc = 2;
-          continue;
-        }
-        if (cur_loc == 500) {
-          cur_loc = 499;
-          continue;
-        }
-        cur_loc += move[k];
-      }
-
-      sum_prob += prob;
+#pragma omp critical
+      total_sum += sum_prob;
+      // cout << sum_prob << endl;
     }
-    #pragma omp critical
-    total_sum += sum_prob;
-    // cout << sum_prob << endl;
   }
 
   cpp_int num;
