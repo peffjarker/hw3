@@ -58,6 +58,7 @@ int main() {
 
   long long sum_prob = 0;
 
+  #pragma omp parallel for
   for (int i = 1; i <= 500; i++) {
 
     // Compute the probability that the frog, starting at position
