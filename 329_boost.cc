@@ -56,10 +56,10 @@ int main() {
   }
 
   // cout << (1<<15) << endl;
-  long long total_sum = 0;
+  long long sum_prob = 0;
 #pragma omp parallel
   {
-    long long sum_prob = 0;
+    long long l_sum_prob = 0;
     for (int i = 1; i <= 500; i++) {
 
       // Compute the probability that the frog, starting at position
@@ -99,27 +99,23 @@ int main() {
           cur_loc += move[k];
         }
 
-        sum_prob += prob;
+        l_sum_prob += prob;
       }
 #pragma omp critical
-      total_sum += sum_prob;
+      sum_prob += l_sum_prob;
       // cout << sum_prob << endl;
     }
 
-#pragma omp critical
-    {
-      cpp_int num;
-      cpp_int den;
-      cpp_int gcd_n_d;
-      long long d = 235092492288000ll;
-      num = sum_prob;
-      den = d;
-      gcd_n_d = gcd(num, den);
+    cpp_int num;
+    cpp_int den;
+    cpp_int gcd_n_d;
+    long long d = 235092492288000ll;
+    num = sum_prob;
+    den = d;
+    gcd_n_d = gcd(num, den);
 
-      cout << "Probability = " << sum_prob << "/" << 235092492288000ll << endl;
-      // cout << "GCD  = " <<gcd_n_d << endl;
-      cout << "Reduced form:" << endl;
-      cout << sum_prob / gcd_n_d << "/" << d / gcd_n_d << endl;
-    }
+    cout << "Probability = " << sum_prob << "/" << 235092492288000ll << endl;
+    // cout << "GCD  = " <<gcd_n_d << endl;
+    cout << "Reduced form:" << endl;
+    cout << sum_prob / gcd_n_d << "/" << d / gcd_n_d << endl;
   }
-}
