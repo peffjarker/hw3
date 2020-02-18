@@ -17,6 +17,7 @@
 #include <boost/multiprecision/cpp_int.hpp>
 #include <iostream>
 #include <set>
+#include <omp.h>
 
 using namespace std;
 using namespace boost::multiprecision;
