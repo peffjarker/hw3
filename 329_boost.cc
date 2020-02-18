@@ -56,10 +56,10 @@ int main() {
   }
 
   // cout << (1<<15) << endl;
-
+  long long total_sum = 0;
+  #pragma omp parallel
+  {
   long long sum_prob = 0;
-
-  #pragma omp parallel for
   for (int i = 1; i <= 500; i++) {
 
     // Compute the probability that the frog, starting at position
@@ -101,6 +101,8 @@ int main() {
 
       sum_prob += prob;
     }
+    #pragma omp critical
+    total_sum += sum_prob;
     // cout << sum_prob << endl;
   }
 
