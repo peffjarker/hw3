@@ -98,15 +98,25 @@ int main() {
       done = true;
   }
 
-  future<long long> ans1 = async(computeProbability, 1, 125);
-  future<long long> ans2 = async(computeProbability, 126, 250);
-  future<long long> ans3 = async(computeProbability, 251, 375);
-  future<long long> ans4 = async(computeProbability, 376, 500);
+  // This section creates 8 future objects to obtain value from 8 threads
+  // which compute the probability for that section.
+  future<long long> ans1 = async(computeProbability, 1, 62);
+  future<long long> ans2 = async(computeProbability, 63, 125);
+  future<long long> ans3 = async(computeProbability, 126, 188);
+  future<long long> ans4 = async(computeProbability, 189, 250);
+  future<long long> ans5 = async(computeProbability, 251, 313);
+  future<long long> ans6 = async(computeProbability, 314, 376);
+  future<long long> ans7 = async(computeProbability, 377, 439);
+  future<long long> ans8 = async(computeProbability, 440, 500);
 
   g_sum_prob += ans1.get();
   g_sum_prob += ans2.get();
   g_sum_prob += ans3.get();
   g_sum_prob += ans4.get();
+  g_sum_prob += ans5.get();
+  g_sum_prob += ans6.get();
+  g_sum_prob += ans7.get();
+  g_sum_prob += ans8.get();
 
   cpp_int num;
   cpp_int den;
